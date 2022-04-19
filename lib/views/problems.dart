@@ -27,9 +27,9 @@ class _ProblemsViewState extends State<ProblemsView> {
 
         return Material(
           child: ListView(
-            children: snapshot.data!.docs.map((DocumentSnapshot document) {
+            children: snapshot.data.docs.map((DocumentSnapshot document) {
               Map<String, dynamic> data =
-                  document.data()! as Map<String, dynamic>;
+                  document.data() as Map<String, dynamic>;
               return ListTile(
                 title: Text(data['name']),
                 subtitle: Text(data['descr']),

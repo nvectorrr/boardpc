@@ -1,6 +1,9 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:collection';
+
+import '../model/JournalItem.dart';
 
 class JournalView extends StatefulWidget {
   @override
@@ -8,19 +11,18 @@ class JournalView extends StatefulWidget {
 }
 
 class _JournalViewState extends State<JournalView> {
-  final Stream<QuerySnapshot> _usersStream =
+  final Stream<QuerySnapshot> _streamSnapshot =
       FirebaseFirestore.instance.collection('journal').snapshots();
 
-  @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: _usersStream,
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (snapshot.hasError) {
+      stream: _streamSnapshot,
+      builder: (context, AsyncSnapshot<QuerySnapshot> snap) {
+        if (snap.hasError) {
           return Text('Something went wrong');
         }
 
-        if (snapshot.connectionState == ConnectionState.waiting) {
+        if (snap.connectionState == ConnectionState.waiting) {
           return Material(
               color: Color.fromARGB(255, 45, 45, 45),
               child: Text(
@@ -31,8 +33,8 @@ class _JournalViewState extends State<JournalView> {
         }
 
         return Material(
-          color: Color.fromARGB(255, 45, 45, 45),
-          child: Column(
+            color: Color.fromARGB(255, 45, 45, 45),
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 SizedBox(
@@ -49,33 +51,31 @@ class _JournalViewState extends State<JournalView> {
                 SizedBox(
                   height: 30,
                 ),
-                ListView(
-                  shrinkWrap: true,
-                  children:
-                      snapshot.data!.docs.map((DocumentSnapshot document) {
-                    Map<String, dynamic> data =
-                        document.data()! as Map<String, dynamic>;
-                    return ListTile(
-                      textColor: Colors.green,
-                      title: AutoSizeText(
-                        data['date'],
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                        maxLines: 1,
-                        minFontSize: 20,
-                        maxFontSize: 27,
-                      ),
-                      subtitle: AutoSizeText(
-                        data['event'],
-                        style: TextStyle(fontWeight: FontWeight.w500),
-                        maxLines: 3,
-                        minFontSize: 18,
-                        maxFontSize: 24,
-                      ),
-                    );
-                  }).toList(),
-                ),
-              ]),
-        );
+                ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: snap.data.docs.length,
+                    itemBuilder: (ctx, index) => ListTile(
+                          textColor: Colors.green,
+                          title: AutoSizeText(
+                            DateTime.tryParse(snap.data.docs[index]['date']
+                                    .toDate()
+                                    .toString())
+                                .toString(),
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                            maxLines: 1,
+                            minFontSize: 20,
+                            maxFontSize: 27,
+                          ),
+                          subtitle: AutoSizeText(
+                            snap.data.docs[index]['event'],
+                            style: TextStyle(fontWeight: FontWeight.w500),
+                            maxLines: 3,
+                            minFontSize: 18,
+                            maxFontSize: 24,
+                          ),
+                        ))
+              ],
+            ));
       },
     );
   }

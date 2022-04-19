@@ -1,5 +1,5 @@
 class Task {
-  Task({required this.name, required this.descr, required this.isCompleted});
+  Task({this.name,this.descr,this.isCompleted});
 
   String name;
   String descr;
