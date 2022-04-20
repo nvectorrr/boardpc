@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'BoardPC',
       theme: ThemeData(
+        unselectedWidgetColor: Colors.green,
         primarySwatch: Colors.green,
         highlightColor: Color(0xffFFE59D),
         scaffoldBackgroundColor: Color.fromARGB(255, 42, 42, 42),
