@@ -46,60 +46,50 @@ class _ProblemsViewState extends State<ProblemsView> {
                   minFontSize: 24,
                   maxFontSize: 48,
                 ),
-                SizedBox(
-                  height: 30,
-                ),
                 ListView.builder(
                     shrinkWrap: true,
                     itemCount: snap.data.docs.length,
                     itemBuilder: (ctx, index) => Container(
-                          child: Row(
-                            children: <Widget>[
-                              Checkbox(
-                                value: !snap.data.docs[index]['active'],
-                                onChanged: (bool value) {
-                                  String documentId = snap.data.docs[index].id;
-                                  bool currentState =
-                                      snap.data.docs[index]['active'];
-                                  updateDocument(documentId, currentState);
-                                },
-                              ),
-                              AutoSizeText(
-                                "| Задача: " +
-                                    snap.data.docs[index]['name'] +
-                                    " | ",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.green),
-                                maxLines: 3,
-                                minFontSize: 18,
-                                maxFontSize: 24,
-                              ),
-                              AutoSizeText(
-                                "Локация: " +
-                                    snap.data.docs[index]['location'] +
-                                    " | ",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.green),
-                                maxLines: 3,
-                                minFontSize: 18,
-                                maxFontSize: 24,
-                              ),
-                              AutoSizeText(
-                                "Персонал: " +
-                                    snap.data.docs[index]['role'] +
-                                    " |",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.green),
-                                maxLines: 3,
-                                minFontSize: 18,
-                                maxFontSize: 24,
-                              ),
-                            ],
-                          ),
-                        ))
+                            child: Column(
+                          children: <Widget>[
+                            SizedBox(height: 20),
+                            Row(
+                              children: <Widget>[
+                                SizedBox(width: 10),
+                                Checkbox(
+                                  value: !snap.data.docs[index]['active'],
+                                  onChanged: (bool value) {
+                                    String documentId =
+                                        snap.data.docs[index].id;
+                                    bool currentState =
+                                        snap.data.docs[index]['active'];
+                                    updateDocument(documentId, currentState);
+                                  },
+                                ),
+                                SizedBox(
+                                  width:
+                                      0.8 * (MediaQuery.of(context).size.width),
+                                  child: AutoSizeText(
+                                    "| Задача: " +
+                                        snap.data.docs[index]['name'] +
+                                        " | Локация: " +
+                                        snap.data.docs[index]['location'] +
+                                        " | Персонал: " +
+                                        snap.data.docs[index]['role'] +
+                                        " |",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.green),
+                                    maxLines: 10,
+                                    minFontSize: 18,
+                                    maxFontSize: 24,
+                                  ),
+                                ),
+                                SizedBox(width: 10),
+                              ],
+                            ),
+                          ],
+                        )))
               ],
             ));
       },
