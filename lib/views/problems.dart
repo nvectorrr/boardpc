@@ -107,7 +107,6 @@ class _ProblemsViewState extends State<ProblemsView> {
   }
 
   void updateDocument(String documentId, bool currentState) {
-    print(documentId);
     _streamSnapshot.doc(documentId).update({'active': !currentState});
     documentToUpdateId = "";
   }
