@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
-class ProblemsView extends StatefulWidget {
+class ProblemsAdminView extends StatefulWidget {
   @override
   _ProblemsViewState createState() => _ProblemsViewState();
 }
 
-class _ProblemsViewState extends State<ProblemsView> {
+class _ProblemsViewState extends State<ProblemsAdminView> {
   var _streamSnapshot = FirebaseFirestore.instance.collection('tasks');
 
   String documentToUpdateId = "";
@@ -58,9 +58,12 @@ class _ProblemsViewState extends State<ProblemsView> {
                                 SizedBox(width: 10),
                                 Checkbox(
                                   value: !snap.data.docs[index]['active'],
-                                  onChanged: (bool uselessValue) {
-                                    uselessValue =
-                                        !snap.data.docs[index]['active'];
+                                  onChanged: (bool value) {
+                                    String documentId =
+                                        snap.data.docs[index].id;
+                                    bool currentState =
+                                        snap.data.docs[index]['active'];
+                                    updateDocument(documentId, currentState);
                                   },
                                 ),
                                 SizedBox(
