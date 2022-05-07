@@ -30,23 +30,28 @@ class _ProblemsViewState extends State<ProblemsView> {
               ));
         }
 
-        return Material(
-            color: Color.fromARGB(255, 45, 45, 45),
+        return Scaffold(
+          backgroundColor: Color.fromARGB(255, 45, 45, 45),
+          body: SingleChildScrollView(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              //crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 SizedBox(
                   height: 15,
                 ),
-                AutoSizeText(
-                  'Журнал неполадок',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.green),
-                  maxLines: 1,
-                  minFontSize: 24,
-                  maxFontSize: 48,
+                Align(
+                  alignment: Alignment.center,
+                  child: AutoSizeText(
+                    'Журнал неполадок',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.green),
+                    maxLines: 1,
+                    minFontSize: 24,
+                    maxFontSize: 48,
+                  ),
                 ),
                 ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: snap.data.docs.length,
                     itemBuilder: (ctx, index) => Container(
@@ -56,24 +61,51 @@ class _ProblemsViewState extends State<ProblemsView> {
                             Row(
                               children: <Widget>[
                                 SizedBox(width: 10),
-                                Checkbox(
-                                  value: !snap.data.docs[index]['active'],
-                                  onChanged: (bool uselessValue) {
-                                    uselessValue =
-                                        !snap.data.docs[index]['active'];
-                                  },
+                                Column(children: <Widget>[
+                                  Checkbox(
+                                    value: !snap.data.docs[index]['active-1'],
+                                    onChanged: (bool uselessValue) {
+                                      uselessValue =
+                                          !snap.data.docs[index]['active-1'];
+                                    },
+                                  ),
+                                  Checkbox(
+                                    value: !snap.data.docs[index]['active-2'],
+                                    onChanged: (bool uselessValue) {
+                                      uselessValue =
+                                          !snap.data.docs[index]['active-2'];
+                                    },
+                                  ),
+                                  Checkbox(
+                                    value: !snap.data.docs[index]['active-3'],
+                                    onChanged: (bool uselessValue) {
+                                      uselessValue =
+                                          !snap.data.docs[index]['active-3'];
+                                    },
+                                  ),
+                                ]),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  "|\n|\n|\n|\n|",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.green),
+                                ),
+                                SizedBox(
+                                  width: 10,
                                 ),
                                 SizedBox(
                                   width:
                                       0.8 * (MediaQuery.of(context).size.width),
                                   child: AutoSizeText(
-                                    "| Задача: " +
+                                    "Задача: " +
                                         snap.data.docs[index]['name'] +
-                                        " | Локация: " +
+                                        "\nЛокация: " +
                                         snap.data.docs[index]['location'] +
-                                        " | Персонал: " +
-                                        snap.data.docs[index]['role'] +
-                                        " |",
+                                        "\nПерсонал: " +
+                                        snap.data.docs[index]['role'],
                                     style: TextStyle(
                                         fontWeight: FontWeight.w500,
                                         color: Colors.green),
@@ -88,7 +120,9 @@ class _ProblemsViewState extends State<ProblemsView> {
                           ],
                         )))
               ],
-            ));
+            ),
+          ),
+        );
       },
     );
   }

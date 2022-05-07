@@ -30,23 +30,28 @@ class _ProblemsViewState extends State<ProblemsAdminView> {
               ));
         }
 
-        return Material(
-            color: Color.fromARGB(255, 45, 45, 45),
+        return Scaffold(
+          backgroundColor: Color.fromARGB(255, 45, 45, 45),
+          body: SingleChildScrollView(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              //crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 SizedBox(
                   height: 15,
                 ),
-                AutoSizeText(
-                  'Журнал неполадок',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.green),
-                  maxLines: 1,
-                  minFontSize: 24,
-                  maxFontSize: 48,
+                Align(
+                  alignment: Alignment.center,
+                  child: AutoSizeText(
+                    'Журнал неполадок',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.green),
+                    maxLines: 1,
+                    minFontSize: 24,
+                    maxFontSize: 48,
+                  ),
                 ),
                 ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: snap.data.docs.length,
                     itemBuilder: (ctx, index) => Container(
@@ -56,27 +61,63 @@ class _ProblemsViewState extends State<ProblemsAdminView> {
                             Row(
                               children: <Widget>[
                                 SizedBox(width: 10),
-                                Checkbox(
-                                  value: !snap.data.docs[index]['active'],
-                                  onChanged: (bool value) {
-                                    String documentId =
-                                        snap.data.docs[index].id;
-                                    bool currentState =
-                                        snap.data.docs[index]['active'];
-                                    updateDocument(documentId, currentState);
-                                  },
+                                Column(children: <Widget>[
+                                  Checkbox(
+                                    value: !snap.data.docs[index]['active-1'],
+                                    onChanged: (bool value) {
+                                      String documentId =
+                                          snap.data.docs[index].id;
+                                      bool currentState =
+                                          snap.data.docs[index]['active-1'];
+                                      updateDocument(
+                                          documentId, currentState, "1");
+                                    },
+                                  ),
+                                  Checkbox(
+                                    value: !snap.data.docs[index]['active-2'],
+                                    onChanged: (bool value) {
+                                      String documentId =
+                                          snap.data.docs[index].id;
+                                      bool currentState =
+                                          snap.data.docs[index]['active-2'];
+                                      updateDocument(
+                                          documentId, currentState, "2");
+                                    },
+                                  ),
+                                  Checkbox(
+                                    value: !snap.data.docs[index]['active-3'],
+                                    onChanged: (bool value) {
+                                      String documentId =
+                                          snap.data.docs[index].id;
+                                      bool currentState =
+                                          snap.data.docs[index]['active-3'];
+                                      updateDocument(
+                                          documentId, currentState, "3");
+                                    },
+                                  ),
+                                ]),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  "|\n|\n|\n|\n|",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.green),
+                                ),
+                                SizedBox(
+                                  width: 10,
                                 ),
                                 SizedBox(
                                   width:
                                       0.8 * (MediaQuery.of(context).size.width),
                                   child: AutoSizeText(
-                                    "| Задача: " +
+                                    "Задача: " +
                                         snap.data.docs[index]['name'] +
-                                        " | Локация: " +
+                                        "\nЛокация: " +
                                         snap.data.docs[index]['location'] +
-                                        " | Персонал: " +
-                                        snap.data.docs[index]['role'] +
-                                        " |",
+                                        "\nПерсонал: " +
+                                        snap.data.docs[index]['role'],
                                     style: TextStyle(
                                         fontWeight: FontWeight.w500,
                                         color: Colors.green),
@@ -91,13 +132,29 @@ class _ProblemsViewState extends State<ProblemsAdminView> {
                           ],
                         )))
               ],
-            ));
+            ),
+          ),
+        );
       },
     );
   }
 
-  void updateDocument(String documentId, bool currentState) {
-    _streamSnapshot.doc(documentId).update({'active': !currentState});
+  void updateDocument(
+      String documentId, bool currentState, String active_index) {
+    _streamSnapshot
+        .doc(documentId)
+        .update({'active-' + active_index: !currentState});
     documentToUpdateId = "";
   }
 }
+
+/*
+value: !snap.data.docs[index]['active-1'],
+                                    onChanged: (bool value) {
+                                      String documentId =
+                                          snap.data.docs[index].id;
+                                      bool currentState =
+                                          snap.data.docs[index]['active-1'];
+                                      updateDocument(documentId, currentState);
+                                    },
+ */
